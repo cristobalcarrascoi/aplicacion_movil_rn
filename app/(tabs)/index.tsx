@@ -18,7 +18,6 @@ const Formulario: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // Aquí puedes manejar el envío de datos del formulario
     console.log({
       nombre,
       direccion,
@@ -46,22 +45,6 @@ const Formulario: React.FC = () => {
         onChangeText={setDireccion}
       />
 
-      <Text style={styles.label}>Número de casa:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ingrese el número de casa"
-        value={numeroCasa}
-        onChangeText={setNumeroCasa}
-        keyboardType="numeric"
-      />
-
-      <Text style={styles.label}>Cuenta de luz:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ingrese la cuenta de luz"
-        value={cuentaLuz}
-        onChangeText={setCuentaLuz}
-      />
 
       <Text style={styles.label}>Fecha:</Text>
       <Button title="Seleccionar fecha" onPress={() => setShowDatePicker(true)} />
