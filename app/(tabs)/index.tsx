@@ -1,100 +1,118 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, TextInput, Button, Text, StyleSheet, ScrollView } from 'react-native';
+import axios from 'axios';
 
-const Formulario: React.FC = () => {
+const Formulario = () => {
   const [nombre, setNombre] = useState('');
+  const [rut, setRut] = useState('');
   const [direccion, setDireccion] = useState('');
-  const [numeroCasa, setNumeroCasa] = useState('');
-  const [cuentaLuz, setCuentaLuz] = useState('');
-  const [fecha, setFecha] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [telefono, setTelefono] = useState('');
+  const [email, setEmail] = useState('');
+  const [nroMedidor, setNroMedidor] = useState('');
+  const [mensaje, setMensaje] = useState('');
 
-  const onChangeFecha = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (selectedDate) {
-      setFecha(selectedDate);
+  const enviarDatos = async () => {
+    if (!nombre || !rut || !direccion || !telefono || !email || !nroMedidor) {
+      setMensaje('Por favor, complete todos los campos.');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'http://10.28.34.41/mi_formulario/insertar.php',
+        {
+          nombre,
+          rut,
+          direccion,
+          telefono,
+          email,
+          nro_medidor: nroMedidor,
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.data) {
+        setMensaje('Datos enviados exitosamente.');
+      } else {
+        setMensaje('Hubo un problema al procesar la respuesta.');
+      }
+    } catch (error) {
+      setMensaje('Hubo un error al enviar los datos.');
+      console.error("Error de solicitud:", error);
     }
   };
 
-  const handleSubmit = () => {
-    // Aquí puedes manejar el envío de datos del formulario
-    console.log({
-      nombre,
-      direccion,
-      numeroCasa,
-      cuentaLuz,
-      fecha,
-    });
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Nombre:</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.titulo}>Formulario de datos clientes - ADMIN Electrica</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ingrese su nombre"
+        placeholder="Nombre"
         value={nombre}
         onChangeText={setNombre}
       />
-
-      <Text style={styles.label}>Dirección:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ingrese su dirección"
+        placeholder="RUT"
+        value={rut}
+        onChangeText={setRut}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Dirección"
         value={direccion}
         onChangeText={setDireccion}
       />
-
-      <Text style={styles.label}>Número de casa:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Ingrese el número de casa"
-        value={numeroCasa}
-        onChangeText={setNumeroCasa}
+        placeholder="Teléfono"
+        keyboardType="phone-pad"
+        value={telefono}
+        onChangeText={setTelefono}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo electrónico"
+        keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Número de medidor"
         keyboardType="numeric"
+        value={nroMedidor}
+        onChangeText={setNroMedidor}
       />
-
-      <Text style={styles.label}>Cuenta de luz:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ingrese la cuenta de luz"
-        value={cuentaLuz}
-        onChangeText={setCuentaLuz}
-      />
-
-      <Text style={styles.label}>Fecha:</Text>
-      <Button title="Seleccionar fecha" onPress={() => setShowDatePicker(true)} />
-      {showDatePicker && (
-        <DateTimePicker
-          value={fecha}
-          mode="date"
-          display="default"
-          onChange={onChangeFecha}
-        />
-      )}
-
-      <Button title="Enviar" onPress={handleSubmit} />
-    </View>
+      <Button title="Enviar" onPress={enviarDatos} />
+      {mensaje && <Text style={styles.mensaje}>{mensaje}</Text>}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
+    justifyContent: 'center',
     padding: 20,
-    marginTop: 40,
-
   },
-  label: {
-    fontSize: 16,
-    marginVertical: 8,
+  titulo: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 20,
   },
   input: {
+    height: 40,
+    borderColor: 'gray',
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 8,
-    borderRadius: 5,
-    marginBottom: 12,
+    marginBottom: 20,
+    paddingLeft: 10,
+  },
+  mensaje: {
+    marginTop: 20,
+    fontSize: 16,
+    color: 'black', 
+    textAlign: 'center',
   },
 });
 
