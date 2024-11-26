@@ -1,5 +1,6 @@
 {
   "expo": {
+    "permissions": ["CAMERA", "MEDIA_LIBRARY"],
     "name": "formulario-react-native",
     "slug": "formulario-react-native",
     "version": "1.0.0",
@@ -19,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "bundler": "metro",
@@ -32,5 +34,6 @@
     "experiments": {
       "typedRoutes": true
     }
+    
   }
 }
