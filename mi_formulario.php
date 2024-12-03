@@ -1,4 +1,5 @@
-//En htdocs
+//Este archivo va en la carpeta htdocs de xampp
+
 <?php
 
 header("Access-Control-Allow-Origin: *");
