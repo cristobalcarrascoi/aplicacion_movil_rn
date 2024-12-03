@@ -38,10 +38,11 @@ const Formulario: React.FC = () => {
     const payload = {
       numero_medidor: numeroMedidor,
       comentarios: comentarios,
-      imagenes: JSON.stringify(fotos), // Convertir las rutas de las imágenes en JSON
+      imagenes: JSON.stringify(fotos), 
     };
 
     try {
+      //Ruta del fetch en local httdocs. Cambiar en caso de.
       const response = await fetch('https://127.0.0.1/mi_formulario/insertar.php', {
         method: 'POST',
         headers: {
@@ -53,7 +54,6 @@ const Formulario: React.FC = () => {
       const data = await response.json();
       if (response.ok) {
         alert('Datos enviados correctamente');
-        // Limpiar el formulario
         setNumeroMedidor('');
         setComentarios('');
         setFotos([]);
